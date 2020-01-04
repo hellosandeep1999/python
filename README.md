@@ -1,1 +1,1 @@
-All projects of traning for practice
+All projects of training for practice
