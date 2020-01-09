@@ -25,7 +25,7 @@ fact = 1
 if x<0:
     print("negative numbers are not allowed")
 elif x == 0:
-    print("factorial of zero is always zero")
+    print("factorial of zero is always 1")
 else:
     for a in range(1,x+1):
         fact = fact*a
