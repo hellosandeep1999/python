@@ -11,40 +11,56 @@ print(len(string.split()))
 
 
 
-a = int(input("Enter first number"))
-b = int(input("Enter second number"))
-c = int(input("Enter third number"))
 
-max = a if a>b>c else b if b>c else c
-print(max)
+# Develop a program that will display a sentence backwards after entered.
+string = input("Enter a string")
+print(string[::-1])
 
 
 
 
-
-n = int(input("Enter number of n: "))
-for i in range(n):
-    for j in range(n-i):
-        print(j+1,end="")
-    print()
-    
-
-n = int(input("Enter number of n: "))
-for i in range(n):
-    print(" "*(n-i-1),(str(i+1)+' ')*(i+1))
-    
-    
-    
-    
-    
-    
-for i in range(4):#0,1,2,3
-    print("* "*(i+1))
-    
+# Given a string s, print the string again
+# where all occurences of its first char have
+# been changed to '*', except do not change
+# the first char itself.
+# e.g. 'babble' yields 'ba**le'
+# Assume that the string is length 1 or more.
+# Hint: try using replace function
+inp = input("Enter a string: ")
+k = inp[0]
+l = inp[1:]
+print(k+l)
+m = l.replace(k,"*")
+print(k+m)
 
 
 
 
+# Given a string, find the first appearance of the
+# substring 'not' and 'bad'. If the 'bad' follows
+# the 'not', replace the whole 'not'...'bad' substring
+# with 'good'.
+# Return the resulting string.
+# So 'This dinner is not that bad!' yields:
+# This dinner is good!
+
+inp = input("Enter a string: ")
+a = inp.find("not")
+b = inp.find("bad")
+c = b+3
+d = inp.replace(inp[a:c:1],"good")
+print(d)
+
+
+
+# Clean the Messy salary into integers for Data Processing
+sal = '$876,001' 
+a = sal[0:4]
+b = sal[4:]
+c = a.replace(sal[0],'')
+d = b.replace(sal[4],'')
+print(c+d)
+ 
 
 
 
@@ -52,11 +68,18 @@ for i in range(4):#0,1,2,3
 
 
 
-n = int(input("Enter number of n: "))
-for i in range(n):
-    for j in range(n-i):
-        print(j+1,"",end="")
-    print()
 
 
-chr(65)
+
+
+
+
+
+
+
+
+
+
+
+
+        
