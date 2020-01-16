@@ -97,8 +97,7 @@ else:
 # If the length is even, the front and back halves are the same length.
 # If the length is odd, we'll say that the extra char goes in the front half.
 # e.g. 'abcde', the front half is 'abc', the back half 'de'.
-# Given 2 strings, a and b, return a string of the form
-#  a-front + b-front + a-back + b-back
+
         
 inp =  input("Enter a string: ")
 a = len(inp)
@@ -111,6 +110,20 @@ else:
     print("\nThe back half is : ",inp[b+1:])
 
 
+
+
+# Given 2 strings, a and b, return a string of the form
+#  a-front + b-front + a-back + b-back
+    
+a = input("Enter first name: ")
+b = input("Enter last name: ")
+print(a+"-front",b+"-front",a+"-back",b+"-back")
+
+    
+    
+    
+    
+    
 
 
 
