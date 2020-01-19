@@ -53,6 +53,56 @@ a.insert(0,"india")
 print(a)
 
 
+# remove all 3 from the list
+
+inp = input("Enter the number: ")
+some_list = inp.split()
+a = some_list.count("3")
+for i in range(0,a):
+    some_list.remove("3")
+print(some_list)
+
+
+
+
+# Take the list of the parts of your street address
+# Write a loop that goes through that list and prints out each item in that list
+list1 = ["kk","hostel","india","gate"]
+list2 = []
+for i in list1:
+    list2.append(i)
+print(list2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
