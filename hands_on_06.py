@@ -76,6 +76,154 @@ print(list2)
 
 
 
+#Write a loop that checks each temperature in T and sets the corresponding
+#Tflags element to True if the temperature is above the freezing point of water.
+T = [273.4, 265.5, 277.7, 285.5]
+Tflags = []
+for i in T:
+    Tflags.append(i>273)
+print(Tflags)
+       
+
+
+
+
+
+
+# Clean the Messy salaries into integers for Data Processing
+
+salaries = ['$876,001', '$543,903', '$2453,896'] 
+b = []
+for i in salaries:
+    b.append(i.replace("$","").replace(",",""))
+print(b)
+
+
+
+
+
+
+
+
+# Create a list of Fibonnaci numbers up to the 50th term.
+# The program will then ask the user for which position in the sequence
+inp = int(input("Enter the position: "))
+i = 0
+j = 1
+count = 0
+while count < inp:
+    print(i,", ",end="")
+    sum = i + j
+    i = j
+    j = sum
+    count +=1
+
+
+
+
+
+'''Hands On'''
+# Given a list of strings, return the count of the number of
+# strings where the string length is 2 or more and the first
+# and last chars of the string are the same.
+
+
+a = input("Enter a list: ")
+b = a.split() 
+c = []
+for i in b:
+    if len(i) >= 2 and i[0] == i[-1]:
+        c.append(i)
+print(len(c))
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+    
+
+    
+
+
+
+
+
 
 
 
