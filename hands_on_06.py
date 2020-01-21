@@ -128,13 +128,117 @@ while count < inp:
 # and last chars of the string are the same.
 
 
-a = input("Enter a list: ")
+a = input("Enter a list: ")                  #words = ['aba', 'xyz', 'aa', 'x', 'bbb']
 b = a.split() 
 c = []
 for i in b:
     if len(i) >= 2 and i[0] == i[-1]:
         c.append(i)
 print(len(c))
+
+
+
+
+
+# Given a list of strings, return a list with the strings
+# in sorted order, except group all the strings that begin with 'x' first.
+
+
+inp = input("Enter a list: ")        # e.g. ['mix', 'xyz', 'apple', 'xanadu', 'aardvark'] 
+a = inp.split() 
+b = []
+c = []
+for i in a:
+    if i[0] == "x":
+        c.append(i)
+    else:
+        b.append(i)
+c.extend(b)
+print(c)
+
+
+
+
+
+# D. Given a list of numbers, return a list where
+# all adjacent == elements have been reduced to a single element,
+# so [1, 2, 2, 3] returns [1, 2, 3]. You may create a new list or
+# modify the passed in list.
+
+
+inp = input("Enter alist of numbers: ")
+nums = inp.split()
+for i in nums:
+    x = nums.count(i)
+    for j in range(1,x):
+        nums.remove(i)
+nums.sort()
+print(nums)       
+
+        
+
+
+'''Hands On'''
+
+# Given two lists sorted in increasing order, create and return a merged
+# list of all the elements in sorted order. You may modify the passed in lists.
+# Ideally, the solution should work in "linear" time, making a single
+# pass of both lists.
+
+inp1 = input("Enter first list: ")
+list1 = inp1.split()
+inp2 = input("Enter second list: ")
+list2 = inp2.split()
+list2.extend(list1)
+list2.sort()
+print(list2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
