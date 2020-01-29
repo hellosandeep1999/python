@@ -195,6 +195,33 @@ print(list2)
 
 
 
+'''Hands On'''
+
+# Make a function days_in_month to return the number of days in a specific month of a year
+
+thisdict = {
+  "january": 31,
+  "fabruary": 29,
+  "march": 31,
+   "april": 30,
+  "may": 31,
+  "june": 30,
+   "july": 31,
+  "august": 31,
+  "september": 30,
+  "october": 31,
+  "november": 30,
+  "december": 31,
+}
+
+def days_in_month(inp):
+    return thisdict.get(inp)
+
+inp = input("Enter a month: ")
+days_in_month(inp)
+
+
+
 
 
 
