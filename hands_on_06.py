@@ -223,6 +223,51 @@ days_in_month(inp)
 
 
 
+'''Hands On'''
+
+
+#Create a dictionary myaddress using your address. 
+#Choose relevant keys(they will probably be strings), 
+#and separate your address into street address,
+#city, state, and postal code portions, all of which are strings (for your ZIP
+#Code, don’t enter it in as a number).
+
+myaddress = {'street':'3225 West Foster Avenue',
+             'city':'Chicago', 
+             'state':'IL',
+             'zip':'60625'
+             }
+
+for i in myaddress.values(): #different 1
+    print(i)
+
+
+for x,y in myaddress.items():      #different 2
+    print(x,"=",y)
+
+
+print(myaddress['street'])        #different 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
