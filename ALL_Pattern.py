@@ -150,7 +150,35 @@ for i in range(n):
     for j in range(i+1):
         print(i+1,"",end="")
     print()
-    
+
+
+
+
+
+"""
+Pattern
+
+
+                  1 
+                2 1 2 
+              3 2 1 2 3 
+            4 3 2 1 2 3 4 
+          5 4 3 2 1 2 3 4 5
+          
+"""
+
+
+
+inp = int(input("Enter a number: "))
+for i in range(inp):
+    print("  "*(inp-i-1),end = '')
+    for j in range(i+1):
+        print((i+1)-j,end = " ")
+    for j in range(i):
+        print(j+2,end = " ")
+    print()
+
+  
 
 """
 Pattern
