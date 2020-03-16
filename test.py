@@ -948,23 +948,19 @@ d1["Colors Reported"].value_counts(ascending=True)
 select = ["City","Colors Reported"]
 d1[select]
     
-    
-a = 1
 
-b =  "Rajesh sharma"
+import pandas as pd
+nba = pd.read_csv("nba.csv")
 
-c = ["hello","maqbool"]
-
+nba["Salary"] = nba["Salary"].fillna(0).astype(int)
 
 
+nba["Ranking"] = nba["Salary"].rank(ascending=False)
 
 
+import math
 
-
-
-
-
-
+math.sqrt(4)
 
 
 
