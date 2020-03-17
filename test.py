@@ -935,11 +935,11 @@ c.apply(fun1)
  this season bring some new like its included data analytics part
    
     
-url = "https://raw.githubusercontent.com/justmarkham/pandas-videos/master/data/ufo.csv"
+url = "https://github.com/vishwajeetsinghrana8/MachineLearning/edit/master/ML55/employees.csv"
 
-d1 = pd.read_csv(url)
+d1 = pd.read_csv("file.txt")
  
-d1.to_csv("extra.csv")
+d1.to_csv("employees.csv")
     
 d1.columns
 d1.info()
@@ -961,12 +961,6 @@ nba["Ranking"] = nba["Salary"].rank(ascending=False)
 import math
 
 math.sqrt(4)
-
-
-
-
-
-
 
 
 
