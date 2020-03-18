@@ -963,6 +963,40 @@ import math
 math.sqrt(4)
 
 
+import pandas as pd
+
+bond = pd.read_csv("jamesbond.csv")
+
+bond.set_index("Film")
+bond.reset_index(drop=True)
+
+bond.set_index("Year",inplace=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
