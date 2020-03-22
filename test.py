@@ -980,6 +980,75 @@ bond.set_index("Year",inplace=True)
 
 
 
+def remove(saprate_name):
+    vowels = ('a', 'e', 'i', 'o', 'u','A','E','I','O','U') 
+    for x in seprate_name:
+        if x in vowels:
+            seprate_name = seprate_name.replace(x,'')
+    return seprate_name
+    
+state_name = ['Alabama', 'California', 'Oklahoma', 'Florida' "harsh jain", "sandeep"]
+
+for name in state_name:
+    print(remove(name))
+
+
+
+                
+
+
+
+
+
+
+
+for x in range(1,51):
+        if(x % 3 == 0 and x % 5 == 0):
+              print("FizzBuzz")
+        elif(x % 3 == 0):
+              print("Fizz")
+        elif(x % 5 == 0):
+               print("Buzz")
+        else:
+              print(x)
+
+
+
+
+orders = [ ["34587", "Learning Python", "Mark Lutz", 4, 40.95], 
+	       ["98762", "Programming Python", "Mark Lutz", 5, 56.80], 
+           ["77226", "Head First Python", "Paul Barry", 3,32.95],
+           ["88112", "Einführung in Python3", "Bernd Klein",3, 24.99]]
+
+min_order = 100
+invoice_totals = list(map(lambda x: x if x[1] >= min_order else (x[0], x[1] + 10), 
+			              map(lambda x: (x[0],x[2] * x[3]), orders)))
+
+print(invoice_totals)
+
+
+
+
+orders[0][4]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
