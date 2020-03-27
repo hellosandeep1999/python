@@ -976,11 +976,17 @@ bond.set_index("Year",inplace=True)
 
 
 
+i = 1
+while (True):
+    a = 3120*i
+    b = (a+1)/17
+    i = i + 1
+    
 
-
+math.pow(52,37)%143
 
        
-
+is_prime(3)
 
 
 
