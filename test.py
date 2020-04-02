@@ -978,9 +978,16 @@ bond.set_index("Year",inplace=True)
 
 i = 1
 while (True):
-    a = 3120*i
-    b = (a+1)/17
-    i = i + 1
+    a = ((3120*i)+1)/17
+    b = a - int(a)
+    if b == 0.0:
+        print(a)
+        print(i)
+        break
+    else:
+        i = i + 1
+    
+        
     
 
 math.pow(52,37)%143
