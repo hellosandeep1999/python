@@ -998,11 +998,14 @@ is_prime(3)
 
 
 
+list1 = [1,2,3,4]
+list2 = [6,7,8,9]
+list1.extend(list2)
+print(list1)
 
 
 
-
-
+list1 = list2.index(6)
 
 
 
