@@ -976,51 +976,6 @@ bond.set_index("Year",inplace=True)
 
 
 
-i = 1
-while (True):
-    a = ((3120*i)+1)/17
-    b = a - int(a)
-    if b == 0.0:
-        print(a)
-        print(i)
-        break
-    else:
-        i = i + 1
-    
-        
-    
-
-math.pow(52,37)%143
-
-       
-is_prime(3)
-
-
-
-
-list1 = [1,2,3,4]
-list2 = [6,7,8,9]
-list1.extend(list2)
-print(list1)
-
-
-
-list1 = list2.index(6)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
