@@ -972,7 +972,40 @@ bond.reset_index(drop=True)
 
 bond.set_index("Year",inplace=True)
 
+==========================================================
 
+Rangoli program
+
+inp = int(input("Enter a number:  "))
+
+for i in range(inp):
+    print("-"*(inp+(inp-2)-(i*2)),end="")
+    for j in range(i+1):
+        if i+1 == 1:
+            print(chr(96+(inp-j)),end="")
+        else:
+            print(chr(96+(inp-j))+'-',end="")
+    for j in range(i):
+        if j == (i-1):
+            print(chr(96+((inp+1)-(i-j))),end="")
+        else:
+            print(chr(96+((inp+1)-(i-j)))+'-',end="")
+    print("-"*(inp+(inp-2)-(i*2)),end="")
+    print()
+for i in range(inp-1):
+    print("-"*(2+(i*2)),end="")
+    for j in range(inp-(i+1)):
+        if i+1 == (inp-1):
+            print(chr(96+(inp-j)),end="")
+        else:
+            print(chr(96+(inp-j))+'-',end="") 
+    for j in range(inp-(i+2)):
+        if j == (inp-(i+3)):
+            print(chr(96+inp-((inp-(i+3)-j))),end="")
+        else:
+            print(chr(96+inp-((inp-(i+3)-j)))+'-',end="")
+    print("-"*(2+(i*2)),end="")
+    print()
 
 
 
