@@ -35,17 +35,14 @@ Sample Output:
 
 
 
-
 inp = input("Enter a list of number").split()
-b = inp[::-1]
-a = []
 
-for i in b:
-    a.append(i[::-1])
-    
-if a == inp:
-    print("Pallindromic Integer")
+
+for i in inp:
+    rev = i[::-1]
+    if rev == i:
+        print("True")
+        break
 else:
-    print("not pallindromic")
-    
+    print("Fales")
     
