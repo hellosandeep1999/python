@@ -1,14 +1,4 @@
-# -*- coding: utf-8 -*-
 """
-Created on Sat May  9 17:36:39 2020
-
-@author: user
-"""
-"""
-Code Challenge 1
-  Filename:
-      radio.py
-
 Characteristics    |   Functionality
 ---------------------------------------
 color              |
@@ -32,40 +22,67 @@ Switch OFF the radio
 Destroy the Radio
 """
 
-
-
-
-
-
-
-
-
 class Radio:
-    def __init__(self, switch, mode, frequency, volume):
-        self.switch = switch
-        self.mode = mode
-        self.frequency = frequency 
-        self.volume = volume
 
-    def On_Radio(self):
-        return "Radio is Switch "+self.switch \
-               + "\nSet the mode to" + self.mode \
-               + '\nFrequency   ' + self.frequency \
-               + '\nVolume '+ self.volume 
+    # Class Variables
+    color = "brown"
+    brand = "Philips"
+    ACPower = False
+    headphone = False    
     
-    def Off_Radio(self):
-        return "Radio is switch "+self.switch
+    # Constructor
+    def __init__(self):
+        # Instance variables
+        self.power_led = "ON"
+        self.mode_led = None
+        self.frequency = 0.0
+        self.volume = 0
+        print("Your Radio is Ready to be Played ")
+
+    # Instance Method
+    def power_switch(self,power_status):
+        self.power_led = power_status
+        print("Your Radio Power is " + str(self.power_led))
+
+    # Instance Method
+    def mode_switch(self,mode_status):
+        self.mode_led = mode_status
+        print("Your Radio Mode is set to " + str(self.mode_led))
     
-    def __del__(self): 
-        print('\nRadio Destroyed')
+    # Instance Method
+    def band_tuner(self,freq_value):
+        self.frequency = freq_value
+        print("Your Radio frequency is set to " + str(self.frequency))
 
-        
-New_Radio = Radio("ON","FM","102.2","8")        
+    # Instance Method
+    def volume_tuner(self,vol_value):
+        self.volume = vol_value
+        print("Your Radio volume is set to " + str(self.volume))
 
-print(New_Radio.On_Radio())
 
-New_Radio.switch = "OFF"
+#Make a Actual Radio from the blueprint
+chunnu_ka_radio = Radio()
+print("Color of my Radio = " + str(Radio.color))
+print("Brand of my Radio = " + str(Radio.brand))
 
-print(New_Radio.Off_Radio())
+#Switch ON the radio
+chunnu_ka_radio.power_switch("ON")
 
-del New_Radio
+#Set the mode to FM
+chunnu_ka_radio.mode_switch("FM")
+
+#Set the frequency to 102.2
+chunnu_ka_radio.band_tuner(102.2)
+
+#Set the volume to 8
+chunnu_ka_radio.volume_tuner(8)
+
+#Listen to your song
+
+
+#Switch OFF the radio
+chunnu_ka_radio.power_switch("OFF")
+
+
+# Destroy the Radio
+chunnu_ka_radio = None
