@@ -5,65 +5,61 @@ Created on Thu Feb  6 19:09:01 2020
 @author: user
 """
 
+
+"""
+Code Challenge:
+  Name: 
+    Bid Plus
+  Filename: 
+    bid_plus.py
+  Problem Statement:
+      USE SELENIUM
+      Write a Python code to Scrap data and download data from given url.
+      url = "https://bidplus.gem.gov.in/bidlists"
+      Make list and append given data:
+          1. BID NO
+          2. items
+          3. Quantity Required
+          4. Department Name And Address
+          5. Start Date/Time(Enter date and time in different columns)
+          6. End Date/Time(Enter date and time in different columns)
+          
+          # Optional - Do not do this
+          7. Name of the PDF file
+          
+     Make a csv file add all data in it.
+      csv Name: bid_plus.csv
+"""
+
+
+      
 from selenium import webdriver
 import pandas as pd
-from collections import OrderedDict
-from time import sleep
+address=[]
+item=[]
+item_required=[]
+start_date=[]
+end_date=[]
 
-bid_plus = "https://bidplus.gem.gov.in/bidlists"
-
-browser = webdriver.Chrome("E:/New folder/chromedriver.exe")
-
-browser.get(bid_plus)
-sleep(5)
-
-content=browser.find_element_by_class_name('pagi_content')
-A=[]
-B=[]
-C=[]
-D=[]
-E=[]
-F=[]
-first = content.find_element_by_class_name('border block ')
-first1 = first.find_element_by_class_name('block_header')
-cells = row.find_elements_by_tag_name('td')
-if len(cells) == 5:
-        A.append(cells[0].text.strip())
-        B.append(cells[1].text.strip())
-        C.append(cells[2].text.strip())
-        D.append(cells[3].text.strip())
-        E.append(cells[4].text.strip())
-
-
-
-col_name = ["BID NO","items(s)","Quantity Required","Department Name And Address","Start Date","End Date"]
-col_data = OrderedDict(zip(col_name,[A,B,C,D,E,F]))
-
-df = pd.DataFrame(col_data) 
-df.to_csv("Desktop/New folder/former4.csv")
+#driver = webdriver.Chrome('E:/New folder/chromedriver.exe')
+driver = webdriver.Chrome('E:/New folder/chromedriver.exe')
+driver.get("https://bidplus.gem.gov.in/bidlists")
+c=0
+while(c<=20): 
+    c+=1
+    bid_table = driver.find_element_by_id('pagi_content')
+    bid_table = bid_table.find_elements_by_class_name('border')
+    for i in bid_table:             
+            item.append(i.find_elements_by_tag_name('span')[0].text.strip())
+            item_required.append(i.find_elements_by_tag_name('span')[1].text.strip())
+            start_date.append(i.find_elements_by_tag_name('span')[2].text.strip())
+            end_date.append(i.find_elements_by_tag_name('span')[3].text.strip())
+            address.append(i.find_element_by_class_name('add-height').text.strip())
+    driver.find_element_by_xpath("//a[@rel='next']").click()
+driver.quit() 
+dff = pd.DataFrame(zip(item,item_required,address,start_date,end_date),columns=['Item','Item Reuired','Address','Start Date','End Date'])
+dff.to_csv("former5.csv")
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-for row in content.find_element_by_class_name('border block '):
-    cells = row.find_elements_by_tag_name('td')
-    if len(cells) == 5:
-        A.append(cells[0].text.strip())
-        B.append(cells[1].text.strip())
-        C.append(cells[2].text.strip())
-        D.append(cells[3].text.strip())
-        E.append(cells[4].text.strip())
