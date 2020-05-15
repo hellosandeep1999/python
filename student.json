@@ -1,0 +1,105 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb  4 12:16:17 2020
+
+@author: user
+"""
+
+"""
+
+Code Challenge
+  Name: 
+    Student and Faculty JSON
+  Filename: 
+    student.json
+    faculty.json
+  Problem Statement:
+    Create a student and Faculty JSON object and get it verified using jsonlint.com
+    Write a JSON for faculty profile. 
+    The JSON should have profile of minimum 2 faculty members. 
+    The profile for each faculty should include below information atleast:
+
+        First Name
+        Last Name
+        Photo (Just a random url)
+        Department 
+        Research Areas (can be multiple)
+        Contact Details (should include phone number and email id and can have multiple )
+   Hint:
+       www.jsonlint.com
+       
+"""
+
+
+#Conversion of Python to JSON format and print using dumps()
+
+import json
+#step1
+employee = {"name":"sandeep",
+            "age":20,
+            "email":"sandeepjain@gmail.com",
+            "college":"jecrc",
+            "branch":"cse",
+            "ismarried":True,
+            "isgirlfrnd":None
+            }
+
+string = json.dumps(employee)  
+print(string)  #Conversion of Python to JSON format and print
+
+
+
+#step2    : use to making a file emp.json and save json format data
+with open('Desktop/New folder/emp.json','w') as f:
+     json.dump(employee,f,indent=4)   
+     
+ 
+
+
+#step3  :  use to read the data in python format 
+with open('Desktop/New folder/emp.json','r') as f:
+     data1 = json.load(f)   
+     print(data1)  
+     
+     
+     
+     
+     
+     
+     
+# mathod 2
+
+# json to python format using loads()
+     
+employee = '''{"name":"jain",
+            "age":20,
+            "email":"sandeepjain@gmail.com",
+            "college":"jecrc",
+            "branch":"cse",
+            "ismarried":true,
+            "isgirlfrnd":null
+            }'''
+
+data = json.loads(employee)
+for i,k in data.items():
+    print('{}:{}'.format(i,k))
+    
+    
+
+     
+     
+     
+     
+     
+     
+     
+     
+ 
+     
+     
+     
+     
+     
+     
+     
+     
