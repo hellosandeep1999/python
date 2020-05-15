@@ -35,6 +35,7 @@ Code Challenge:
       
 from selenium import webdriver
 import pandas as pd
+bid_no = []
 address=[]
 item=[]
 item_required=[]
@@ -49,7 +50,8 @@ while(c<=20):
     c+=1
     bid_table = driver.find_element_by_id('pagi_content')
     bid_table = bid_table.find_elements_by_class_name('border')
-    for i in bid_table:             
+    for i in bid_table:
+            bid_no.append(i.find_elements_by_tag_name('a')[0].text.strip())            
             item.append(i.find_elements_by_tag_name('span')[0].text.strip())
             item_required.append(i.find_elements_by_tag_name('span')[1].text.strip())
             start_date.append(i.find_elements_by_tag_name('span')[2].text.strip())
@@ -57,7 +59,7 @@ while(c<=20):
             address.append(i.find_element_by_class_name('add-height').text.strip())
     driver.find_element_by_xpath("//a[@rel='next']").click()
 driver.quit() 
-dff = pd.DataFrame(zip(item,item_required,address,start_date,end_date),columns=['Item','Item Reuired','Address','Start Date','End Date'])
+dff = pd.DataFrame(zip(bid_no,item,item_required,address,start_date,end_date),columns=['BID NO','Item','Item Reuired','Address','Start Date','End Date'])
 dff.to_csv("former5.csv")
 
 
