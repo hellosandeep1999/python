@@ -7,6 +7,7 @@ Created on Wed May 27 16:02:02 2020
 
 
 import pandas as pd
+from re import search
 
 Main_file=input("Enter Your Main File Name(Without Extension) :")
 df4 = pd.read_excel("{}.xlsx".format(Main_file))
@@ -38,7 +39,7 @@ for file in range(File_Total):
     
     df1 = pd.read_csv("{}.csv".format(File_Name))
     
-
+    
     df1.columns = ["Name", "Email", "Time"]
     
     
@@ -114,21 +115,41 @@ for file in range(File_Total):
     
     
     zoom_list = f['Name'].values.tolist()
+    zoom_Email_list = f['Email'].values.tolist()
     data1_list = df4['Name'].values.tolist()
+    data1_Email_list = df4['Email'].values.tolist()
     
     store = []
     zoom_store = []
     
     for zoom_index, zoom_name in enumerate(zoom_list):
-        name = zoom_name.split()
-        for part_name in name:
-            if len(part_name) > 2:
-                for data1_index, data1_name in enumerate(data1_list):
-                    if str(part_name) in  str(data1_name):
-                        store.append(data1_index)
-                        zoom_store.append(zoom_index)
+        if "." in str(zoom_Email_list[zoom_index]):
+            for data1_Email_index,data1_Email in enumerate(data1_Email_list):
+                if zoom_Email_list[zoom_index] == data1_Email:
+                    store.append(data1_Email_index)
+                    zoom_store.append(zoom_index)
+                    break
+            else:
+                name = zoom_name.split()
+                for part_name in name:
+                    if len(part_name) > 2:
+                        for data1_index, data1_name in enumerate(data1_list):
+                            if search(part_name,data1_name):
+                                store.append(data1_index)
+                                zoom_store.append(zoom_index)
+                                break
                         break
-                break
+        else:
+            name = zoom_name.split()
+            for part_name in name:
+                if len(part_name) > 2:
+                    for data1_index, data1_name in enumerate(data1_list):
+                        if search(part_name,data1_name):
+                            store.append(data1_index)
+                            zoom_store.append(zoom_index)
+                            break
+                    break
+            
                 
     
     
@@ -169,17 +190,54 @@ for file in range(File_Total):
             break
     
     
+     
+    No_Reg = f[f['NameRegistered'].isnull()]   #This datafrme which are not attend but not registered
+    No_Reg.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]
+    
+    
         
     #f.dropna(subset=['Email'], inplace=True) 
         
     f.dropna(subset=['Email','NameRegistered', 'Gender', 'College Name',
            'WhatsApp No.'], inplace=True)
+     
         
+        
+    
+    No_present = f.copy()
+    No_present = No_present.merge(right = df4, how = "outer", on = "Email", suffixes=('', '_Reg') )
+    No_present = No_present[No_present['Name'].isnull()]
+    No_present = No_present[["Name", "Email", "Time",'Name_Reg', 'Gender_Reg', 'College Name_Reg','WhatsApp No._Reg']]
+    No_present.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]
+    
+    No_present=No_present.append(pd.Series("nan"), ignore_index=True)
+    No_present=No_present.drop([0],axis=1) 
+    new_row={"Zoom Name":"Not","Email":"Registered"}
+    No_present = No_present.append(new_row,ignore_index=True)
+    
+        
+    
+    
+       
         
     f = f.sort_values("Time", ascending = False)
     f.reset_index(inplace = True, drop = True)  
-    f.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]    
-    f.to_csv("Day{}.csv".format(file), index = False)
+    f.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]  
+    
+    f=f.append(pd.Series("nan"), ignore_index=True)
+    f=f.drop([0],axis=1) 
+    new_row={"Zoom Name":"Absent","Email":"List"}
+    f = f.append(new_row,ignore_index=True)
+    
+    
+    
+    
+    
+    
+    frame=[f,No_present,No_Reg]
+    result=pd.concat(frame)
+    result = result[["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]]   
+    result.to_csv("Day{}.csv".format(file), index = False)
 
 
 
