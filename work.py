@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+Created on Fri May 29 16:04:20 2020
+
+@author: user
+"""
+
+# -*- coding: utf-8 -*-
+"""
 Created on Wed May 27 16:02:02 2020
 
 @author: user
@@ -30,8 +37,15 @@ df4.columns = ["Name", "Email", "Gender", "College Name", "WhatsApp No."]
 File_Total=int(input("Enter the Number of File You want to Enter:"))
 
 
-  
+#for full.csv 
+dataframe_name = []  
+for file_i in range(File_Total):
+    a = "data"+str(file_i)
+    dataframe_name.append(a)
     
+    
+    
+  
 for file in range(File_Total):
         
     File_Name=input("Enter the "+ str(file) +" File Name")
@@ -193,7 +207,7 @@ for file in range(File_Total):
      
     No_Reg = f[f['NameRegistered'].isnull()]   #This datafrme which are not attend but not registered
     No_Reg.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]
-    
+    No_Reg = No_Reg.sort_values("Time", ascending = False)
     
         
     #f.dropna(subset=['Email'], inplace=True) 
@@ -230,6 +244,13 @@ for file in range(File_Total):
     f = f.append(new_row,ignore_index=True)
     
     
+    #for full.csv
+    my_copy = f[:-2].copy()
+    dataframe_name[file] = my_copy
+    dataframe_name[file] = dataframe_name[file][["Zoom Name","Email","Time"]]
+    dataframe_name[file].columns = ["Name", "Email", "Time"]
+    dataframe_name[file]["Date"] = file+1
+    
     
     
     
@@ -241,24 +262,15 @@ for file in range(File_Total):
 
 
 
+
+
+
+
+
 #work start for full.csv
 
 
 
-
-dataframe_name = []
-for file_i in range(File_Total):
-    a = "data"+str(file_i)
-    dataframe_name.append(a)
-
-
-index = 0
-while index < File_Total:
-    dataframe_name[index] = pd.read_csv("Day{}.csv".format(index)) 
-    dataframe_name[index] = dataframe_name[index][["Zoom Name","Email","Time"]]
-    dataframe_name[index].columns = ["Name", "Email", "Time"]
-    dataframe_name[index]["Date"] = index+1
-    index += 1
     
 zoom = pd.concat(dataframe_name)
 #Deleting the columns with no value
@@ -368,7 +380,7 @@ final_copy = final.copy()  #make a copy of dataframe
 for last_index in range(File_Total):
     final = final[(final["Day{}".format(last_index)] > 0)]
 
-
+final.drop_duplicates(subset=["Email"], keep='first', inplace=True)
 final.reset_index(inplace = True, drop = True)
 final.to_csv("Full_data_present_everyday.csv", index = False)
 
@@ -398,6 +410,42 @@ final_work = final_work[final_work['Zoom Name'].isnull()]
 final_work = final_work[['Name_Reg','Email','Gender_Reg', 'College Name_Reg', 'WhatsApp No._Reg']]
 
 final_work.to_csv("Not_present_any_day.csv", index = False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
