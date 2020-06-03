@@ -1,3 +1,3 @@
 # python
 
-hello\nhello
+hello
