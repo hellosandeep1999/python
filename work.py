@@ -50,6 +50,7 @@ for file in range(File_Total):
         
     File_Name=input("Enter the "+ str(file) +" File Name")
     
+    file_number = File_Name[4]
     
     df1 = pd.read_csv("{}.csv".format(File_Name))
     
@@ -258,7 +259,7 @@ for file in range(File_Total):
     frame=[f,No_present,No_Reg]
     result=pd.concat(frame)
     result = result[["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]]   
-    result.to_csv("Day{}.csv".format(file), index = False)
+    result.to_csv("Day{}.csv".format(file_number), index = False)
 
 
 
