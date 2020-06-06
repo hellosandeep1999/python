@@ -219,7 +219,12 @@ app.layout = html.Div( children=[
         }
     ),
     
-    
+   #=========================================================================================
+   
+   
+   
+   
+   
      #graph4           
     dcc.Graph(figure=fig1),
         
@@ -268,91 +273,82 @@ app.layout = html.Div( children=[
 
         #search data             
         html.Div([
-        dcc.Store(id = 'memory'),
-        html.H3('Details of Particular Student:'),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.P('Search by:'),
-                        dcc.Dropdown(
-                                id = 'filter_x',
-                                options=[
-                                    {'label': 'No filter', 'value': 0},
-                                    {'label': 'Name', 'value': 1},
-                                    {'label': 'Email id', 'value': 2},
-                                    {'label': 'Mobile No.', 'value': 3}
-                                ],
-                                value='0'
-                        ),
-                    ],
-                    className='three columns',
-                    style={'margin-top': '10'}
-                ),
-                html.Div(
-                    [
-                        html.P('Search From Here: '),
-                        dcc.Input(
-                                  id = 'filter_y',
-                                  placeholder='Enter a value...',
-                                  value=''
-                              )  ,
-                    ],
-                    className='three columns',
-                    style={'margin-top': '10','padding-left': '70px'}
-                ),
-                html.Div(
-                    [
-                        html.Button(children='Search Data', id='button_chart',n_clicks=0)
-                    ],
-                    className='one columns',
-                    style={'padding-top': '30px'}
-                )             
-            ],
-            className='row'
-        ),
-         html.Div(
-            [
+            dcc.Store(id = 'memory'),
+            html.H3('Details of Particular Student:'),
+            html.Div(
+                [
+                    html.Div(
+                        [
+                            html.P('Search by:'),
+                            dcc.Dropdown(
+                                    id = 'filter_x',
+                                    options=[
+                                        {'label': 'No filter', 'value': 0},
+                                        {'label': 'Name', 'value': 1},
+                                        {'label': 'Email id', 'value': 2},
+                                        {'label': 'Mobile No.', 'value': 3}
+                                    ],
+                                    value='0'
+                                 ),
+                        ],
+                        className='three columns',
+                        style={'margin-top': '10'}
+                    ),
+                    html.Div(
+                        [
+                            html.P('Search From Here: '),
+                            dcc.Input(
+                                      id = 'filter_y',
+                                      placeholder='Enter a value...',
+                                      value=''
+                                  )  ,
+                        ],
+                        className='three columns',
+                        style={'margin-top': '10','padding-left': '70px'}
+                    ),
+                    html.Div(
+                        [
+                            html.Button(children='Search Data', id='button_chart',n_clicks=0)
+                        ],
+                        className='one columns',
+                        style={'padding-top': '30px'}
+                    )             
+                ],
+                className='row'
+            ),
+             html.Div(
+                [
+                      
+                        
+                    dash_table.DataTable(
+                    id='table',
+                    columns=[
+                        {"name": i, "id": i} for i in list4],
+                         style_cell={'textAlign': 'left'}, 
+                   style_data={ 'border': '1px solid blue' ,
+                               'margin-left':'20px',
+                               'margin-right':'20px'},
+                    style_header={
+                      'backgroundColor': 'rgb(230, 230, 230)',
+                      'fontWeight': 'bold'},
+                    ),
                     
-                dash_table.DataTable(
-                id='table',
-                columns=[
-                    {"name": i, "id": i} for i in list4],
-                     style_cell={'textAlign': 'left'}, 
-               style_data={ 'border': '1px solid blue' ,
-                           'margin-left':'20px',
-                           'margin-right':'20px'},
-                style_header={
-                  'backgroundColor': 'rgb(230, 230, 230)',
-                  'fontWeight': 'bold',
-                  
-                  
-            },
-              
-#                        style={
-#            'textAlign': 'center',
-#            'color': colors['color2'],
-#            'margin': 'auto',
-#             }
-                ),
-                
-                
-            ], className = 'row'
-        ),
-#        html.Div(
-#            [
-#                    
-#                html.Div(id = 'table-box'),
-#                html.Div(dt.DataTable(id = 'table', data=[{}]), style={'display': 'none'}),
-#                
-#                
-#                
-#            ], className = 'row'
-#        ),
-    ], className = 'row',  style = {'margin-top': 50, 'border':
+                    
+                            
+                            
+                 ], className = 'row'
+              ),
+
+           ], className = 'row',  style = {'margin-top': 50, 'border':
                                     '1px solid #C6CCD5', 'padding': 15,
-                                    'border-radius': '5px'})
-   
+                                    'border-radius': '5px'}
+        )
+                    
+                    
+                    
+                    
+                    
+   #===================================================================================
 #        id='Graph1',
 #        figure={
 #            'data': [
@@ -492,11 +488,45 @@ dash.dependencies.Output('table', 'data'),
 
 def update_figure(n_clicks, filename):
     df5 = pd.read_csv("Full_data_present_everyday.csv")
-    if filename in df5["Name"].tolist():
-        data=df5.to_dict('records')
+    if type(filename) == int:
+        filename = str(filename)
+        filename_list = []
+        for index,number in enumerate(df5["WhatsApp No."].tolist()):
+            number = int(number)
+            number = str(number)
+            if filename in str(number):
+                filename_list.append(index)
+        df6 = []
+        for i in filename_list:
+            df6.append(df5.iloc[i])
+        df7 = pd.DataFrame(df6)
+        data=df7.to_dict('records')
+        return data
+    elif filename.isalpha():
+        filename = filename.upper()
+        filename_list = []
+        for index,name in enumerate(df5["Name"].tolist()):
+            if filename in name:
+                filename_list.append(index)
+        df6 = []
+        for i in filename_list:
+            df6.append(df5.iloc[i])
+        df7 = pd.DataFrame(df6)
+        data=df7.to_dict('records')
         return data
 
-
+    elif "@" in filename:
+        filename_list = []
+        for index,name in enumerate(df5["Email"].tolist()):
+            if filename in name:
+                filename_list.append(index)
+        df6 = []
+        for i in filename_list:
+            df6.append(df5.iloc[i])
+        df7 = pd.DataFrame(df6)
+        data=df7.to_dict('records')
+        return data
+    
 
 
 
