@@ -15,16 +15,43 @@ Created on Wed May 27 16:02:02 2020
 
 import pandas as pd
 from re import search
+import numpy as np
 
 Main_file=input("Enter Your Main File Name(Without Extension) :")
 df4 = pd.read_excel("{}.xlsx".format(Main_file))
 
+df4_copy = df4.copy()
+
+df4_copy["Zoom id"] = np.nan
+
+df4_column_list = [] 
+
+for column_name in df4.columns.tolist():
+    if "NAME" in column_name.upper():
+        df4_column_list.append(column_name)
+        break
+for column_name in df4.columns.tolist():
+    if "MAIL" in column_name.upper():
+        df4_column_list.append(column_name)
+        break
+for column_name in df4.columns.tolist():
+    if "GENDER" in column_name.upper():
+        df4_column_list.append(column_name)
+        break
+for column_name in df4.columns.tolist():
+    if "COLLEGE" in column_name.upper():
+        df4_column_list.append(column_name)
+        break
+for column_name in df4.columns.tolist():
+    if "WHATSAPP" in column_name.upper():
+        df4_column_list.append(column_name)
+        break
+        
+        
+
+df4 = df4[df4_column_list]
 
 
-
-df4 = df4[["Your Name ( This will be printed on your Certificate )", \
-               "Email ID (Please enter your Gmail ID)", "Your Gender", \
-               "College Name", "Whatsapp No "]]
     
     
 df4.columns = ["Name", "Email", "Gender", "College Name", "WhatsApp No."] 
@@ -54,6 +81,7 @@ for file in range(File_Total):
     
     df1 = pd.read_csv("{}.csv".format(File_Name))
     
+    df1 = df1[df1.columns.tolist()]
     
     df1.columns = ["Name", "Email", "Time"]
     
@@ -89,7 +117,7 @@ for file in range(File_Total):
     
     
     
-    f.drop_duplicates(subset='Name',keep='last', inplace=True)
+    f.drop_duplicates(subset='Email',keep='last', inplace=True)
     f.reset_index(inplace = True, drop = True)
     
     
@@ -98,10 +126,14 @@ for file in range(File_Total):
     df4['Name'] = removing(data_list)
     
     
+    if file == 0:
+        df4_copy[df4_column_list[0]] = [name.upper() for name in df4_copy[df4_column_list[0]].tolist()]
+        data_list = df4_copy[df4_column_list[0]].tolist()
+        df4_copy[df4_column_list[0]] = removing(data_list)
     
     
     
-    
+#    f_copy = f[f['NameRegistered'].isnull()]
     
     
     
@@ -127,7 +159,7 @@ for file in range(File_Total):
     """
     
     
-    
+    f["Zoom id"] = np.nan
     
     zoom_list = f['Name'].values.tolist()
     zoom_Email_list = f['Email'].values.tolist()
@@ -137,33 +169,84 @@ for file in range(File_Total):
     store = []
     zoom_store = []
     
+    
+    
     for zoom_index, zoom_name in enumerate(zoom_list):
         if "." in str(zoom_Email_list[zoom_index]):
             for data1_Email_index,data1_Email in enumerate(data1_Email_list):
                 if zoom_Email_list[zoom_index] == data1_Email:
                     store.append(data1_Email_index)
                     zoom_store.append(zoom_index)
+                    f["Zoom id"][zoom_index] = data1_Email
+                    df4_copy["Zoom id"][data1_Email_index] = data1_Email
                     break
+                
             else:
                 name = zoom_name.split()
-                for part_name in name:
-                    if len(part_name) > 2:
+                set1 = []
+                set2 = []
+                n = 0
+                while n < len(name):
+                    if len(name[n]) > 2:
                         for data1_index, data1_name in enumerate(data1_list):
-                            if search(part_name,data1_name):
-                                store.append(data1_index)
-                                zoom_store.append(zoom_index)
-                                break
+                            data1_name = data1_name.split() 
+                            if name[-1] in data1_name:
+                                set2.append(data1_index)
+                            if name[n] in data1_name:
+                                set1.append(data1_index)
                         break
+                    else:
+                        n += 1
+                set3 = set(set1)
+                set4 = set(set2)
+                set_intersection = set3.intersection(set4)
+                
+                if len(set_intersection) > 0:
+                    change_list = list(set_intersection)
+                    store.append(change_list[0])
+                    zoom_store.append(zoom_index)
+                    f["Zoom id"][zoom_index] = df4["Email"][change_list[0]]
+                    df4_copy["Zoom id"][change_list[0]] = f['Email'][zoom_index]
+#                else:
+#                    change_list = list(set2)
+#                    if len(change_list) > 0:
+#                        store.append(change_list[0])
+#                        zoom_store.append(zoom_index)
+                        
+                        
+                  
         else:
             name = zoom_name.split()
-            for part_name in name:
-                if len(part_name) > 2:
+            set1 = []
+            set2 = []
+            n = 0
+            while n < len(name):
+                if len(name[n]) > 2:
                     for data1_index, data1_name in enumerate(data1_list):
-                        if search(part_name,data1_name):
-                            store.append(data1_index)
-                            zoom_store.append(zoom_index)
-                            break
+                        data1_name = data1_name.split() 
+                        if name[-1] in data1_name:
+                            set2.append(data1_index)
+                        if name[n] in data1_name:
+                            set1.append(data1_index)
                     break
+                else:
+                    n += 1
+            set3 = set(set1)
+            set4 = set(set2)
+            set_intersection = set3.intersection(set4)
+            
+            if len(set_intersection) > 0:
+                change_list = list(set_intersection)
+                store.append(change_list[0])
+                zoom_store.append(zoom_index)
+                f["Zoom id"][zoom_index] = df4["Email"][change_list[0]]
+                df4_copy["Zoom id"][change_list[0]] = f['Email'][zoom_index]
+#            else:
+#                change_list = list(set2)
+#                if len(change_list) > 0:
+#                     store.append(change_list[0])
+#                     zoom_store.append(zoom_index)
+               
             
                 
     
@@ -196,21 +279,64 @@ for file in range(File_Total):
     for i in store:
         while j < len(zoom_store):
             value = zoom_store[j]
-            f['Email'][value] = df4['Email'][i] 
+#           f['Email'][value] = df4['Email'][i] 
             f['NameRegistered'][value] = df4['Name'][i]
             f['Gender'][value] = df4['Gender'][i]
             f['College Name'][value] = df4['College Name'][i]
             f['WhatsApp No.'][value] = df4['WhatsApp No.'][i]
             j += 1
             break
-    
+        
+    f.drop_duplicates(subset='Email',keep='last', inplace=True)
     
      
     No_Reg = f[f['NameRegistered'].isnull()]   #This datafrme which are not attend but not registered
-    No_Reg.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]
+    No_Reg.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No.","Zoom id"]
     No_Reg = No_Reg.sort_values("Time", ascending = False)
     
+    
+    
+    
+    
         
+#    #work for suspence entries
+#    Suspence_copy = No_Reg.copy()
+#    Suspence_copy.reset_index(inplace = True, drop = True) 
+#    
+#    Suspence_zoom_list = Suspence_copy['Zoom Name'].values.tolist()
+#    Suspence_data1_list = df4['Name'].values.tolist()
+#    
+#    Suspence_set1 = []
+#    for Suspence_zoom_index,Suspence_zoom_name in enumerate(Suspence_zoom_list):
+#         Suspence_name = Suspence_zoom_name.split()
+#         n = 0
+#         while n < len(Suspence_name):
+#             if len(Suspence_name[n]) > 2:
+#                 for Suspence_data1_index, Suspence_data1_name in enumerate(Suspence_data1_list):
+#                     if search(Suspence_name[n],Suspence_data1_name):
+#                         Suspence_set1.append(Suspence_zoom_index)
+#                         break
+#                 break
+#             else:
+#                 n += 1
+#    
+#    Suspence_result = []
+#    for Suspence_set1_index,Suspence_set1_value in enumerate(Suspence_set1):
+#        Suspence_result.append(Suspence_copy.iloc[Suspence_set1_value])
+#        
+#    Suspence_result = pd.DataFrame(Suspence_result)         
+#    
+#    
+#    
+#    No_Reg=No_Reg.append(pd.Series("nan"), ignore_index=True)
+#    No_Reg=No_Reg.drop([0],axis=1) 
+#    new_row={"Zoom Name":"Suspended","Email":"Results"}
+#    No_Reg = No_Reg.append(new_row,ignore_index=True)
+    
+    
+    
+    
+    
     #f.dropna(subset=['Email'], inplace=True) 
         
     f.dropna(subset=['Email','NameRegistered', 'Gender', 'College Name',
@@ -220,14 +346,18 @@ for file in range(File_Total):
         
     
     No_present = f.copy()
-    No_present = No_present.merge(right = df4, how = "outer", on = "Email", suffixes=('', '_Reg') )
+    df4 = df4.rename(columns={'Email': 'Zoom id'})
+    No_present = No_present.merge(right = df4, how = "outer", on = "Zoom id", suffixes=('', '_Reg') )
     No_present = No_present[No_present['Name'].isnull()]
-    No_present = No_present[["Name", "Email", "Time",'Name_Reg', 'Gender_Reg', 'College Name_Reg','WhatsApp No._Reg']]
-    No_present.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]
+    No_present.drop(['Email'], axis=1,inplace=True)
+    No_present = No_present.rename(columns={'Zoom id': 'Email'})
+    No_present["Zoom id"] = np.nan
+    No_present = No_present[["Name", "Email", "Time",'Name_Reg', 'Gender_Reg', 'College Name_Reg','WhatsApp No._Reg','Zoom id']]
+    No_present.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No.","Zoom id"]
     
     No_present=No_present.append(pd.Series("nan"), ignore_index=True)
     No_present=No_present.drop([0],axis=1) 
-    new_row={"Zoom Name":"Not","Email":"Registered"}
+    new_row={"Zoom Name":"Suspense","Email":"Data"}
     No_present = No_present.append(new_row,ignore_index=True)
     
         
@@ -237,7 +367,7 @@ for file in range(File_Total):
         
     f = f.sort_values("Time", ascending = False)
     f.reset_index(inplace = True, drop = True)  
-    f.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]  
+    f.columns = ["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No.","Zoom id"]  
     
     f=f.append(pd.Series("nan"), ignore_index=True)
     f=f.drop([0],axis=1) 
@@ -248,8 +378,8 @@ for file in range(File_Total):
     #for full.csv
     my_copy = f[:-2].copy()
     dataframe_name[file] = my_copy
-    dataframe_name[file] = dataframe_name[file][["Zoom Name","Email","Time"]]
-    dataframe_name[file].columns = ["Name", "Email", "Time"]
+    dataframe_name[file] = dataframe_name[file][["Zoom Name","Zoom id","Time"]]
+    dataframe_name[file].columns = ["Name", "Zoom id", "Time"]
     dataframe_name[file]["Date"] = file+1
     
     
@@ -258,7 +388,8 @@ for file in range(File_Total):
     
     frame=[f,No_present,No_Reg]
     result=pd.concat(frame)
-    result = result[["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No."]]   
+    result = result[["Zoom Name", "Email", "Time","Registered Name","Gender","College Name","WhatsApp No.","Zoom id"]]   
+    df4 = df4.rename(columns={'Zoom id': 'Email'})
     result.to_csv("Day{}.csv".format(file_number), index = False)
 
 
@@ -267,7 +398,7 @@ for file in range(File_Total):
 
 
 
-
+df4 = df4.rename(columns={'Email': 'Zoom id'})
 #work start for full.csv
 
 
@@ -281,17 +412,17 @@ zoom.reset_index(inplace = True, drop = True)
 
 
     
-temp = zoom["Email"].tolist()
-temp = [str(x).lower() for x in temp]
-del zoom["Email"]
-zoom.insert(1,"Email",temp,allow_duplicates=True)
+#temp = zoom["Email"].tolist()
+#temp = [str(x).lower() for x in temp]
+#del zoom["Email"]
+#zoom.insert(1,"Email",temp,allow_duplicates=True)
 
 
 
 
 
 
-emails = zoom["Email"].tolist()
+emails = zoom["Zoom id"].tolist()
 ats = []
 for at_index in range(1,(File_Total+1)):
     b = "at" + str(at_index)
@@ -359,13 +490,13 @@ z.reset_index(inplace = True, drop = True)
 
 #z.to_csv("Total Zoom Data.csv", index = False)
 
-
-final = z.merge(right = df4, how = "left", on = "Email", suffixes=('', 'Registered') )
-
-
+z = z.rename(columns={'Email': 'Zoom id'})
+final = z.merge(right = df4, how = "left", on = "Zoom id", suffixes=('', 'Registered'))
 
 
-final_list = ['Name', 'Gender', 'College Name', 'WhatsApp No.','Zoom Name', 'Email']
+
+
+final_list = ['Name', 'Gender', 'College Name', 'WhatsApp No.','Zoom Name', 'Zoom id']
 for final_list_index in range(File_Total):
     day_name = "Day{}".format(final_list_index)
     final_list.append(day_name)
@@ -378,11 +509,29 @@ final = final.sort_values("Total", ascending = False)
 
 final_copy = final.copy()  #make a copy of dataframe
 
+Atleast_one_day = final.copy() #atleast one day present data 
+Atleast_one_day.drop_duplicates(subset=["Zoom id"], keep='first', inplace=True)
+Atleast_one_day.reset_index(inplace = True, drop = True)
+
+
 for last_index in range(File_Total):
     final = final[(final["Day{}".format(last_index)] > 0)]
-
-final.drop_duplicates(subset=["Email"], keep='first', inplace=True)
+final.drop_duplicates(subset=["Zoom id"], keep='first', inplace=True)
 final.reset_index(inplace = True, drop = True)
+
+
+Atleast_one_day_list = Atleast_one_day["Zoom id"].tolist()
+final_list = final["Zoom id"].tolist()
+
+
+for final_list_index,final_list_email in enumerate(final_list):
+    Atleast_one_day = Atleast_one_day[Atleast_one_day["Zoom id"] != '{}'.format(final_list_email)]
+Atleast_one_day.reset_index(inplace = True, drop = True)    
+    
+Atleast_one_day = Atleast_one_day.rename(columns={'Zoom id': 'Email'})
+Atleast_one_day.to_csv("Atleast_one_day_present.csv", index = False)
+
+final = final.rename(columns={'Zoom id': 'Email'})
 final.to_csv("Full_data_present_everyday.csv", index = False)
 
 
@@ -401,22 +550,23 @@ final_copy.drop_duplicates(subset=["Name"], keep='first', inplace=True)
 
 
 
-final_work = final_copy.merge(right = df4, how = "outer", on = "Email", suffixes=('', '_Reg') )
+final_work = final_copy.merge(right = df4, how = "outer", on = "Zoom id", suffixes=('', '_Reg') )
 
 
 
 
 final_work = final_work[final_work['Zoom Name'].isnull()]
 
-final_work = final_work[['Name_Reg','Email','Gender_Reg', 'College Name_Reg', 'WhatsApp No._Reg']]
+final_work = final_work[['Name_Reg','Zoom id','Gender_Reg', 'College Name_Reg', 'WhatsApp No._Reg']]
 
+z = z.rename(columns={'Zoom id': 'Email'})
 final_work.to_csv("Not_present_any_day.csv", index = False)
 
 
 
 
 
-
+df4_copy.to_csv("Updated_Excel _sheet.csv", index = False)
 
 
 
