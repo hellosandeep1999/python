@@ -64,8 +64,10 @@ for file_i in range(File_Total):
     
   
 prt_to_reg = pd.DataFrame(columns=['Zoom Name','Email','Time','Registered Name','Gender','College Name','WhatsApp No.','Zoom id'])
-    
-    
+  
+  
+t2 = pd.DataFrame(columns=['Name', 'Email', 'Gender', 'College Name', 'WhatsApp No.'])
+
     
   
 for file in range(File_Total):
@@ -251,7 +253,26 @@ for file in range(File_Total):
         
     prt_to_reg.drop_duplicates(subset='Email',keep='last', inplace=True)
     
+    
+    
+    #code for update excel sheet
+    prt_to_reg_zoom_id_list = prt_to_reg["Zoom id"].tolist()
+    prt_to_reg_Email_list = prt_to_reg["Email"].tolist()
+    df4_copy_email_list = df4_copy[df4_column_list[1]].tolist()
+    
+    for prt_to_reg_zoom_id_index,prt_to_reg_zoom_id_email in enumerate(prt_to_reg_zoom_id_list):
+        for df4_copy_email_index,df4_copy_email in enumerate(df4_copy_email_list):
+            if prt_to_reg_zoom_id_email == df4_copy_email:
+                df4_copy["Zoom id"][df4_copy_email_index] = prt_to_reg["Email"][prt_to_reg_zoom_id_index]
+                break
+    
+    
+    
+    
+    
 #    ['Zoom Name','Email','Time','Registered Name','Gender','College Name','WhatsApp No.','Zoom id']
+    
+
     
     suspence_t1 = []
     
@@ -261,6 +282,12 @@ for file in range(File_Total):
     suspence_t1 = pd.DataFrame(suspence_t1)
     suspence_t1 = suspence_t1.sort_values("Time", ascending = False)
     suspence_t1.reset_index(inplace = True, drop = True)
+    
+    #work for all suspence data
+    if  file == 0:
+        t1 = suspence_t1
+    else:
+        t1 = t1.merge(right = suspence_t1, how = "outer", on = "Email", suffixes=('', '_Reg{}'.format(file)) )
     
     
     
@@ -385,6 +412,14 @@ for file in range(File_Total):
     suspence_t2.reset_index(inplace = True, drop = True)  
     
     
+    
+    #work for all suspence data
+    t2 = t2.append(suspence_t2)
+    
+    
+    
+    
+    #daywise suspence data
     merge = pd.merge(suspence_t1, suspence_t2, how='outer', on='Email')
     
     merge = merge[['Name_x', 'Email', 'Time', 'Name_y', 'Gender', 'College Name', 'WhatsApp No.']]
@@ -415,6 +450,63 @@ for file in range(File_Total):
     result.to_csv("Day{}.csv".format(file_number), index = False)   
            
     
+
+
+
+#code for suspence data
+t1.dropna(subset=['Email'], inplace=True)
+t1_name_column = []
+for t1_name in t1.columns.tolist():
+    if "Name" in t1_name:
+        if t1[t1_name].isnull().sum() == 0:
+            t1_name_column.append(t1_name)
+            break
+
+t1_name_column.append("Email")
+t1_time_column = []
+for t1_time in t1.columns.tolist():
+    if "Time" in t1_time:
+        t1_time_column.append(t1_time)
+
+t1_column = t1_name_column+t1_time_column
+
+t1 = t1[t1_column]
+t1["Total"] = np.nan
+t1 = t1.fillna(0)
+
+day_count = ["Zoom Name","Email"]
+for day_index in range(len(t1_time_column)):
+    day_count.append("Day{}".format(day_index))
+
+day_count.append("Total")
+t1.columns = day_count
+
+t1["Total"] = 0
+for daywise_index in range(len(t1_time_column)):
+    t1["Total"] += t1["Day{}".format(daywise_index)]
+
+t1 = t1.sort_values("Total", ascending = False)
+
+t2.drop_duplicates(subset=["Email"], keep='first', inplace=True)
+
+suspence_merge = pd.merge(t1,t2, how='outer', on='Email')
+
+suspence_merge_list = ['Name', 'Gender', 'College Name', 'WhatsApp No.','Zoom Name','Email']
+
+suspence_merge_list = suspence_merge_list + t1.columns.tolist()[2:]
+
+suspence_merge = suspence_merge[suspence_merge_list]  #now we will add this data into everyday and atleast present
+    
+  
+
+
+
+
+
+#========================
+
+
+
 
     
 df4 = df4.rename(columns={'Email': 'Zoom id'})
@@ -534,16 +626,16 @@ Atleast_one_day.reset_index(inplace = True, drop = True)
     
   
 Atleast_one_day = Atleast_one_day.rename(columns={'Zoom id': 'Email'})
+Atleast_one_day = Atleast_one_day.rename(columns={'Name': 'Original_Name'})
 
 #this is for original name
-
 original_copy = df4_copy.copy()
 
 original_copy = original_copy.rename(columns={df4_column_list[1]: 'Email'})
 
 Atleast_one_day = Atleast_one_day.merge(right = original_copy, how = "inner", on = "Email", suffixes=('', '_Reg') )
 
-Atleast_one_day_list = ['{}_Reg'.format(df4_column_list[0]), 'Gender', 'College Name', 'WhatsApp No.','Zoom Name', 'Email']
+Atleast_one_day_list = ['{}'.format(df4_column_list[0]), 'Gender', 'College Name', 'WhatsApp No.','Zoom Name', 'Email']
 for Atleast_list_index in range(File_Total):
     At_day_name = "Day{}".format(Atleast_list_index)
     Atleast_one_day_list.append(At_day_name)
@@ -552,10 +644,25 @@ Atleast_one_day_list.append("Total")
 
 Atleast_one_day = Atleast_one_day[Atleast_one_day_list]
 
+
+#Now we will add suspence section in atleast one day
+Atleast_one_day=Atleast_one_day.append(pd.Series("nan"), ignore_index=True)
+Atleast_one_day=Atleast_one_day.drop([0],axis=1) 
+new_row={df4_column_list[0]:"Suspense","Gender":"Data"}
+Atleast_one_day = Atleast_one_day.append(new_row,ignore_index=True) 
+
+suspence_merge1 = suspence_merge.rename(columns={'Name':df4_column_list[0]})
+
+frame2 = [Atleast_one_day,suspence_merge1]
+Atleast_one_day = pd.concat(frame2)
+Atleast_one_day.reset_index(inplace = True, drop = True)
+
 Atleast_one_day.to_csv("Atleast_one_day_present.csv", index = False)    
     
  
      
+
+
 
       
 #code for everyday present who are register and join every day  
@@ -567,6 +674,17 @@ final.drop_duplicates(subset=["Zoom id"], keep='first', inplace=True)
 final.reset_index(inplace = True, drop = True)    
     
 final = final.rename(columns={'Zoom id': 'Email'})
+
+#Now we will add suspence section in every daya present
+final = final.append(pd.Series("nan"), ignore_index=True)
+final = final.drop([0],axis=1) 
+new_row = {'Name':"Suspense","Gender":"Data"}
+final = final.append(new_row,ignore_index=True) 
+
+frame3 = [final,suspence_merge]
+final = pd.concat(frame3)
+final.reset_index(inplace = True, drop = True)
+
 final.to_csv("Full_data_present_everyday.csv", index = False)    
     
     
@@ -581,18 +699,19 @@ final_copy.drop_duplicates(subset=["Zoom id"], keep='first', inplace=True)
 
 final_work = final_copy.merge(right = df4, how = "outer", on = "Zoom id", suffixes=('', '_Reg') )
 
-
 final_work = final_work[final_work['Zoom Name'].isnull()]
-
 
 final_work = final_work[['Name_Reg','Zoom id','Gender_Reg', 'College Name_Reg', 'WhatsApp No._Reg']]
 
-z = z.rename(columns={'Zoom id': 'Email'})
 final_work.to_csv("Not_present_any_day.csv", index = False)
 
 
 
 
+
+
+
+#updated excel sheet
 df4_copy.to_csv("Updated_Excel _sheet.csv", index = False)
 
    
