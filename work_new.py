@@ -458,17 +458,27 @@ t1.dropna(subset=['Email'], inplace=True)
 t1_name_column = []
 for t1_name in t1.columns.tolist():
     if "Name" in t1_name:
-        if t1[t1_name].isnull().sum() == 0:
-            t1_name_column.append(t1_name)
-            break
+        t1_name_column.append(t1_name)
 
-t1_name_column.append("Email")
+t1.reset_index(inplace = True, drop = True)        
+name_list = []
+for i in range(t1.shape[0]):    
+     a = t1.loc[i,t1_name_column].tolist()   
+     cleanedList = [x for x in a if str(x) != 'nan']
+     name_list.append(cleanedList[0])
+
+t1["Name_column"] = name_list
+
+t1_name_column2 = ["Name_column"]
+
+t1_name_column2.append("Email")
 t1_time_column = []
 for t1_time in t1.columns.tolist():
     if "Time" in t1_time:
         t1_time_column.append(t1_time)
 
-t1_column = t1_name_column+t1_time_column
+
+t1_column = t1_name_column2+t1_time_column
 
 t1 = t1[t1_column]
 t1["Total"] = np.nan
