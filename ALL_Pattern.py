@@ -197,7 +197,23 @@ for i in range(n):
         print(chr(64+n-j),"",end="")
     print()
 
-
+"""
+pattern
+E
+D E
+C D E
+B C D E
+A B C D E
+" "
+n=5
+start_char=ord("A")
+for i in range(n,0,-1):
+  for j in range(n-1):
+    print("",end=" ")
+  for j in range(i,n+1):
+     print(chr(start_char+j-1,end=" ")
+  print()
+  
 """
 Pattern
      A
